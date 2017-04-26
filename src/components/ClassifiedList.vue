@@ -1,13 +1,26 @@
 <template>
-    <h1>{{ msg }}</h1>
+  <div>
+      <tag v-for="tag in tagList" v-bind:tag-name=tag.name v-on:increment="deletetag(tag._id)"></tag>
+  </div>
+
 </template>
 
 <script>
+import tag from './tag'
+
 export default {
   name: 'ClassifiedList',
-  data () {
-    return {
-      msg: 'ClassifiedList'
+  computed: {
+    tagList () {
+      return this.$store.state.tagList
+    }
+  },
+  components: {
+    tag
+  },
+  methods: {
+    deletetag: function (tagid) {
+      alert(tagid)
     }
   }
 }
