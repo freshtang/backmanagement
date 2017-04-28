@@ -1,12 +1,17 @@
 <template>
   <div id="editor">
     <input v-model="article.title" placeholder="请在此处输入标题"/>
+    <el-col :span="10" :push="3" >
+        <el-select v-model="article.tag" placeholder="请选择标签">
+          <el-option v-for="item in classifyList" :label="item.tag" :value="item.tag"></el-option>
+        </el-select>
+    </el-col>
     </br>
     <textarea v-model="article.content"></textarea>
     <div id="showtext" v-html="compiledMarkdown"></div>
     </br>
     <button  class="btn btn-sm aabtn" @click="cancle">取消</button>
-    <button  class="btn btn-sm aabtn" @click="create">发布</button>
+    <button  class="btn btn-sm aabtn" @click="createarticle">发布</button>
   </div>
 </template>
 
@@ -18,18 +23,38 @@ export default {
   data () {
     return {
       article: {
-        classify: '', // 文章所属分类
+        tag: '', // 文章所属分类
         title: '', // 文章标题
         content: '# hello' // 文章内容
       }
     }
   },
   methods: {
-    create () {
-      console.log(this.article)
+    createarticle () {
+      this.$confirm('确认要发布文章吗?', '提醒', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'waring'
+      }).then(() => this.$store.dispatch('CreateArticle', {
+        mdcontent: this.compiledMarkdown,
+        ...this.article
+      }).then(data => {
+        this.$notify({
+          title: '发布成功',
+          type: 'success'
+        })
+        console.log(data)
+        this.$router.push({path: '/admin'})
+      }, err => {
+        console.log(err)
+        this.$notify({
+          title: '发布失败',
+          type: 'error'
+        })
+      }))
     },
     cancle () {
-      this.$router.push('/')
+      this.$router.push('/admin')
     }
   },
   components: {
@@ -38,6 +63,9 @@ export default {
   computed: {
     compiledMarkdown: function () {
       return Marked(this.article.content, { sanitize: true })
+    },
+    classifyList () {
+      return this.$store.state.tagList
     }
   }
 }
@@ -56,7 +84,7 @@ export default {
   margin-right: 50px;
 }
 input{
-  margin: 10px;
+  margin: 0 100px 10px;
   padding: 8px;
   width: 200px;
   border-radius: 5px;
