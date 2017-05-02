@@ -8,14 +8,31 @@ import ClassifiedList from '../components/ClassifiedList'
 import EditArticle from '../components/EditArticle'
 import Login from '../components/Login'
 
+import Home from '../FrontComponents/Home'
+import Article from '../FrontComponents/Article'
+import SelectArticle from '../FrontComponents/SelectArticle'
+import Archive from '../FrontComponents/Archive'
+import About from '../FrontComponents/About'
+
+import store from '../store'
+
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home,
+      meta: {auth: false},
+      children: [
+        {
+          path: '', component: Article, name: '文章', meta: {auth: false}
+        },
+        {path: 'article/:id', component: SelectArticle, meta: {auth: false}},
+        {path: 'archive', component: Archive, meta: {auth: false}},
+        {path: 'about', component: About, meta: {auth: false}}
+      ]
     },
     {
       path: '/login',
@@ -48,3 +65,25 @@ export default new Router({
     }
   ]
 })
+
+// 路由钩子
+router.beforeEach(({meta, path}, from, next) => {
+  let {auth = true} = meta
+  let isLogin = Boolean(store.state.token)
+
+  /*
+   访问不需要权限的设置meta:false
+   注册也要设置成meta:false
+   */
+  if (auth && !isLogin && path !== '/login') {
+    return next({path: '/login'})
+  }
+  // 如果登录了以后再访问reg和login则路由到Home
+  if (isLogin && (path === '/login')) {
+    return next({path: '/admin'})
+  }
+  // 未登录的情况下访问reg则直接路由
+  next()
+})
+
+export default router

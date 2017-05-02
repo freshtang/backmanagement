@@ -3,7 +3,7 @@
     <form>
       <input v-model="user.username" placeholder="username"/>
       <br>
-      <input v-model="user.password" placeholder="password"/>
+      <input v-model="user.password" placeholder="password" v-on:keyup.enter="login"/>
       <br>
       <button class="btn btn-sm" @click="login">登陆</button>
       <button class="btn btn-sm" @click="cancel">取消</button>
@@ -32,7 +32,18 @@
         this.$router.push('/')
       },
       login () {
-        console.log(this.user)
+        this.$store.dispatch('UserLogin', this.user).then(() => {
+          this.$notify({
+            title: '登陆成功',
+            type: 'success'
+          })
+          this.$router.push({path: '/admin'})
+        }, () => {
+          this.$notify({
+            title: '登陆失败，请检查用户名或密码',
+            type: 'error'
+          })
+        })
       }
     }
   }

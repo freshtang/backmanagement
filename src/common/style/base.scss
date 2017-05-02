@@ -1,3 +1,6 @@
+html{
+  background-color: ghostwhite;
+}
 button.btn{
   color: #fff;
   background-color: #20a0ff;
@@ -18,4 +21,39 @@ i{
 i.lgicon{
   height: 32px;
   width: 32px;
+}
+.paginationbutton{
+  background-color: white;
+  border: solid darkgray;
+  border-width: 1px;
+  padding: 12px 30px ;
+  border-radius: 5px;
+  box-shadow: 0 0 15px darkgrey;
+  transition-duration: 0.5s;
+  font-weight: 400;
+  font-size: 15px;
+}
+.paginationbutton:hover{
+  box-shadow: 0 0 40px darkgrey;
+  background-color: #f9f9f9;
+}
+a.littletag{
+  background-color: darkgray;
+  border-radius: 5px;
+  padding: 2px 5px;
+  display:inline-block;
+  vertical-align:middle;
+  i{
+    vertical-align:middle;
+  }
+  p{
+    padding: 2px 5px;
+  }
+}
+.clearfix:after{
+  content: '';
+  display: block;
+  height: 0;
+  visibility: hidden;
+  clear: both;
 }

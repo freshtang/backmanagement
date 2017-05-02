@@ -11,7 +11,7 @@
                 <template scope='scope'>
                   <!--这里点击查看进入具体页面但是路径中必须带有admin,这时具体页面里会出现评论的删除选项  -->
                   <!--<el-button size="small" @click="read(scope.row._id)">查看</el-button>-->
-                  <el-button size="small" @click="itemss">查看</el-button>
+                  <el-button size="small" @click="toArticle(scope.row._id)">查看</el-button>
                   <el-button size="small" type='primary' @click="editArticle(scope.row._id)">编辑</el-button>
                   <el-button size="small" type='danger' @click="remove(scope.row._id)">删除</el-button>
                 </template>
@@ -68,6 +68,10 @@ export default {
     handle (val) {
       this.page = val - 1
       this.itemss()
+    },
+    toArticle (id) {
+      // 通过this.$route.params来获取数据
+      this.$router.push({path: `/article/${id}`})
     },
     editArticle (id) {
       // 通过this.$route.params来获取数据

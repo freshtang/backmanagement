@@ -28,5 +28,8 @@ export default {
   },
   deleteLabel (params) {
     return instance.post('/api/label/delete', params)
+  },
+  userLogin (params) {
+    return instance.post('/api/user/login', params)
   }
 }
