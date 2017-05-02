@@ -5,6 +5,12 @@
 ## Build Setup
 
 ``` bash
+# install and start mongodb
+
+# start server
+cd server
+node app.js
+
 # install dependencies
 npm install
 
