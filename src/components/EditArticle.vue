@@ -16,7 +16,9 @@
 </template>
 
 <script>
-  import Marked from 'marked'
+  import marked from 'marked'
+  import hlj from 'highlight.js'
+  import 'highlight.js/styles/hybrid.css'
 
   export default {
     name: 'editarticle',
@@ -66,11 +68,24 @@
       }
     },
     components: {
-      Marked
+      marked
     },
     computed: {
       compiledMarkdown: function () {
-        return Marked(this.article.content, { sanitize: true })
+        marked.setOptions({
+          renderer: new marked.Renderer(),
+          gfm: true,
+          pedantic: false,
+          sanitize: false,
+          tables: true,
+          breaks: true,
+          smartLists: true,
+          smartypants: true,
+          highlight: function (code) {
+            return hlj.highlightAuto(code).value
+          }
+        })
+        return marked(this.article.content)
       },
       classifyList () {
         return this.$store.state.tagList

@@ -18,7 +18,16 @@ import store from '../store'
 
 Vue.use(Router)
 
+const scrollBehavior = (to, from, savedPosition) => {
+  if (savedPosition) {
+    return savedPosition
+  } else {
+    return { x: 0, y: 0 }
+  }
+}
+
 const router = new Router({
+  scrollBehavior,
   routes: [
     {
       path: '/',
@@ -27,10 +36,10 @@ const router = new Router({
       meta: {auth: false},
       children: [
         {
-          path: '', component: Article, name: '文章', meta: {auth: false}
+          path: '', component: Article, name: '文章', meta: {auth: false, scrollBehavior: true}
         },
-        {path: 'article/:id', component: SelectArticle, meta: {auth: false}},
-        {path: 'archive', component: Archive, meta: {auth: false}},
+        {path: 'article/:id', component: SelectArticle, meta: {auth: false, scrollBehavior: true}},
+        {path: 'archive', component: Archive, meta: {auth: false}, scrollBehavior: true},
         {path: 'about', component: About, meta: {auth: false}}
       ]
     },

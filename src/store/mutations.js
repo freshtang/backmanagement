@@ -8,6 +8,6 @@ export default {
   },
   [types.USER_SIGNIN] (state, params) {
     state.token = params
-    // localStorage.setItem('jwt', params)
+    localStorage.setItem('jwt', params)
   }
 }
